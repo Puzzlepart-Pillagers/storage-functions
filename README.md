@@ -105,3 +105,15 @@ Example body:
     "Penning": 200
 }
 ```
+
+### GetLevels
+GET
+https://pillagers-storage-functions.azurewebsites.net/api/GetLevels
+
+Returns the xp table for levelups and xp requirements
+
+### GetRanks
+GET
+https://pillagers-storage-functions.azurewebsites.net/api/GetRanks
+
+Returns the ranks table with corresponding level requirements
