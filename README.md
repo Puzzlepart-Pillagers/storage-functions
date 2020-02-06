@@ -74,6 +74,8 @@ Example body:
 ```
 {
 	"email": "havard@pzl.onmicrosoft.com",
+    "FirstName": "Håvard",
+    "LastName": "Håvarsson",
     "Penning": 0,
     "lat" "0",
     "lon": "0",
