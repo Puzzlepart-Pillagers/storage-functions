@@ -1,19 +1,28 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
+import { createTableService, TableQuery } from 'azure-storage';
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+const tableService = createTableService();
+const tableName = 'Units';
+
+const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest): void {
     context.log('HTTP trigger function processed a request.');
-    const name = (req.query.name || (req.body && req.body.name));
+    const email = (req.query.email || (req.body && req.body.email));
 
-    if (name) {
-        context.res = {
-            // status: 200, /* Defaults to 200 */
-            body: "Hello " + (req.query.name || req.body.name)
-        };
+    if (email) {
+        const query: TableQuery = new TableQuery().where(`PartitionKey == '${email}'`);
+        tableService.queryEntities(tableName, query, null, (error, result, response) => {
+            if (!error) {
+                context.log(response.body);
+                context.res.status(200).json(response.body);
+            } else {
+                context.res.status(500).json({ error: error });
+            }
+        });
     }
     else {
         context.res = {
             status: 400,
-            body: "Please pass a name on the query string or in the request body"
+            body: "Email not provided"
         };
     }
 };
