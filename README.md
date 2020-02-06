@@ -57,7 +57,10 @@ Example body:
 ```
 {
 	"email": "havard@pzl.onmicrosoft.com",
-    "Penning": 0
+    "Penning": 0,
+    "lat" "0",
+    "lon": "0",
+    "XPGain": 1
 }
 ```
 
