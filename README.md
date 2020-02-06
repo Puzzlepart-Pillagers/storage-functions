@@ -28,9 +28,9 @@ Example body:
 } 
 ```
 
-### GainXp
+### SetXp
 POST
-https://pillagers-storage-functions.azurewebsites.net/api/GainXp
+https://pillagers-storage-functions.azurewebsites.net/api/SetXp
 
 Merges new XP value with the existing object with the supplied email/id combination
 
@@ -43,6 +43,23 @@ Example body:
 	"email": "stian@pzl.onmicrosoft.com",
 	"id": "be91fdc0-48e9-11ea-9656-19711baced67",
     "XP": 3
+}
+```
+
+### SetXpGain
+POST
+https://pillagers-storage-functions.azurewebsites.net/api/SetXpGain
+
+Merges new XPGain value with the existing object with the supplied email
+
+Headers:
+Content-Type: application/json
+
+Example body:
+```
+{
+	"email": "stian@pzl.onmicrosoft.com",
+    "XPGain": 2
 }
 ```
 
@@ -70,9 +87,9 @@ https://pillagers-storage-functions.azurewebsites.net/api/GetKing?email={user em
 
 Returns the king associated with `user email` and his data
 
-### GainPenning
+### SetPenning
 POST
-https://pillagers-storage-functions.azurewebsites.net/api/GainPenning
+https://pillagers-storage-functions.azurewebsites.net/api/SetPenning
 
 Merges new Penning value with the existing object with the supplied email
 
