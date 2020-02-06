@@ -10,7 +10,7 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
     if (req.body) {
         const item = req.body
 
-        tableService.mergeEntity(tableName, { PartitionKey: item.email, RowKey: item.id, Penning: item.Penning }, (error, result, response) => {
+        tableService.mergeEntity(tableName, { PartitionKey: 'King', RowKey: item.email, Penning: item.Penning }, (error, result, response) => {
             if (!error) {
                 context.res.status(202).json(response.body);
             } else {

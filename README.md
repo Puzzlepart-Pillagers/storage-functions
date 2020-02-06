@@ -46,6 +46,21 @@ Example body:
 }
 ```
 
+### CreateKing
+POST
+https://pillagers-storage-functions.azurewebsites.net/api/CreateKing
+
+Headers:
+Content-Type: application/json
+
+Example body:
+```
+{
+	"email": "havard@pzl.onmicrosoft.com",
+    "Penning": 0
+}
+```
+
 ### GetKing
 GET
 https://pillagers-storage-functions.azurewebsites.net/api/GetKing?email={user email}
@@ -56,7 +71,7 @@ Returns the king associated with `user email` and his data
 POST
 https://pillagers-storage-functions.azurewebsites.net/api/GainPenning
 
-Merges new Penning value with the existing object with the supplied email/id combination
+Merges new Penning value with the existing object with the supplied email
 
 Headers:
 Content-Type: application/json
@@ -65,7 +80,6 @@ Example body:
 ```
 {
 	"email": "stian@pzl.onmicrosoft.com",
-	"id": "6a5fbd14-f5cf-4021-b1d8-1ca7c388ed91",
     "Penning": 200
 }
 ```

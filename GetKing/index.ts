@@ -9,7 +9,7 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
     const email = (req.query.email || (req.body && req.body.email));
 
     if (email) {
-        const query: TableQuery = new TableQuery().where(`PartitionKey == '${email}'`);
+        const query: TableQuery = new TableQuery().where(`RowKey == '${email}'`);
         tableService.queryEntities(tableName, query, null, (error, result, response) => {
             if (!error) {
                 context.log(response.body);
