@@ -45,3 +45,27 @@ Example body:
     "XP": 3
 }
 ```
+
+### GetKing
+GET
+https://pillagers-storage-functions.azurewebsites.net/api/GetKing?email={user email}
+
+Returns the king associated with `user email` and his data
+
+### GainPenning
+POST
+https://pillagers-storage-functions.azurewebsites.net/api/GainPenning
+
+Merges new Penning value with the existing object with the supplied email/id combination
+
+Headers:
+Content-Type: application/json
+
+Example body:
+```
+{
+	"email": "stian@pzl.onmicrosoft.com",
+	"id": "6a5fbd14-f5cf-4021-b1d8-1ca7c388ed91",
+    "Penning": 200
+}
+```
