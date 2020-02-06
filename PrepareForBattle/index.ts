@@ -21,12 +21,14 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
         tableService.queryEntities(tableName, attackingKingQuery, null, (error, attackerResult, attackerResponse) => {
             if (!error) {
                 let attacker = attackerResponse.body["value"][0]
-                // context.res.status(200).json(response.body);
                 tableService.queryEntities(tableName, defendingKingQuery, null, (error, defenderResult, defenderResponse) => {
                     let defender = defenderResponse.body["value"][0]
                     if (attacker && defender) {
                         // trigger teams webhook and wait before triggering attack webhook
-                        let msg = JSON.stringify({ title: "WAR IS COMING", text: `${attacker.FirstName} ${attacker.LastName} and ${defender.FirstName} ${defender.LastName} are going to war shortly, at ${defender.lat}, ${defender.lon}` });
+                        let msg = JSON.stringify({
+                            title: "WAR IS COMING",
+                            text: `${attacker.FirstName} ${attacker.LastName} and ${defender.FirstName} ${defender.LastName} are going to war shortly, at ${defender.lat}, ${defender.lon}`
+                        });
                         let webHookURL = process.env.TEAMS_WAR_CHANNEL_WEBHOOK_URL;
                         got.post(webHookURL, { method: "POST", body: msg }).then(() => {
                             console.log(`successfully send "prepare for battle message to teams`)
