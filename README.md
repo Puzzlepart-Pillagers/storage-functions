@@ -142,6 +142,24 @@ Example body:
 }
 ```
 
+### SetLocation
+POST
+https://pillagers-storage-functions.azurewebsites.net/api/SetLocation
+
+Merges new Penning value with the existing object with the supplied email
+
+Headers:
+Content-Type: application/json
+
+Example body:
+```
+{
+	"email": "stian@pzl.onmicrosoft.com",
+    "lat": "12",
+    "lon": "69"
+}
+```
+
 ### GetLevels
 GET
 https://pillagers-storage-functions.azurewebsites.net/api/GetLevels
