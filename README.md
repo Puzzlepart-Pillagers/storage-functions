@@ -146,7 +146,7 @@ Example body:
 POST
 https://pillagers-storage-functions.azurewebsites.net/api/SetLocation
 
-Merges new Penning value with the existing object with the supplied email
+Merges new lat/lon values with the existing object with the supplied email
 
 Headers:
 Content-Type: application/json
