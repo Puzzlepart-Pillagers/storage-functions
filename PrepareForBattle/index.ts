@@ -6,6 +6,7 @@ const tableService = createTableService();
 const tableName = 'Kings';
 
 function notifyWarRoom(title, text) { return got(`${process.env.NOTIFY_WAR_ROOM_FUNCTION_URL}?title=${title}&text=${text}`) };
+function timeout(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
 const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest): void {
     context.log('PrepareForBattle function processed by a request.');
@@ -26,30 +27,15 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
                 tableService.queryEntities(tableName, defendingKingQuery, null, (error, defenderResult, defenderResponse) => {
                     let defender = defenderResponse.body["value"][0]
                     if (attacker && defender) {
-                        // trigger teams webhook and wait before triggering attack webhook
-                        let msg = JSON.stringify({
-                            title: "WAR IS COMING",
-                            text: `${attacker.FirstName} ${attacker.LastName} and ${defender.FirstName} ${defender.LastName} are going to war shortly, at ${defender.lat}, ${defender.lon}`
-                        });
-                        let webHookURL = process.env.TEAMS_WAR_CHANNEL_WEBHOOK_URL;
-                        got.post(webHookURL, { method: "POST", body: msg }).then(() => {
-                            console.log(`successfully send "prepare for battle message to teams`)
-                            console.log(msg)
-                        }).then(() => {
-                            function timeout(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-                            console.log("starting grace period before war begins");
-                            timeout(10000).then(() => {
-                                console.log("waited ten seconds")
-                                let tensecondsTitle = "War starting in ten seconds!"
-                                let tensecondsText = "Better buff your thralls!"
-                                notifyWarRoom(tensecondsTitle, tensecondsText);
-                                console.log("war room notified")
-                                timeout(10000).then(() => {
-                                    console.log("waited ten MORE seconds")
-                                    notifyWarRoom("War is starting!", "Blood will be shed!");
-                                    console.log("war starging, room notified")
-                                    context.res.status(200);
-                                })
+                        let title = "WAR IS COMING"
+                        let text = `${attacker.FirstName} ${attacker.LastName} and ${defender.FirstName} ${defender.LastName} are going to war shortly, at ${defender.lat}, ${defender.lon}`
+                        notifyWarRoom(title, text)
+                        console.log("starting grace period before war begins");
+                        timeout(2000).then(() => {
+                            notifyWarRoom("War starting in ten seconds!", "Better buff your thralls!");
+                            timeout(2000).then(() => {
+                                notifyWarRoom("War is starting!", "Blood will be shed!");
+                                context.res.status(200);
                             })
                         })
                     } else {
