@@ -46,6 +46,24 @@ Example body:
 }
 ```
 
+### SetLevel
+POST
+https://pillagers-storage-functions.azurewebsites.net/api/SetLevel
+
+Merges new Level value with the existing object with the supplied email/id combination
+
+Headers:
+Content-Type: application/json
+
+Example body:
+```
+{
+	"email": "stian@pzl.onmicrosoft.com",
+	"id": "be91fdc0-48e9-11ea-9656-19711baced67",
+    "Level": 2
+}
+```
+
 ### SetXpGain
 POST
 https://pillagers-storage-functions.azurewebsites.net/api/SetXpGain
