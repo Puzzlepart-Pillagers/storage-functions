@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { createTableService, TableQuery } from 'azure-storage';
 const got = require("got")
-
+const functionURL = `https://pillagers-storage-functions.azurewebsites.net/api`
 const tableService = createTableService();
 const tableName = 'Kings';
 
@@ -19,6 +19,7 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
         }
     } else {
         // we use Partitionkey for email on Units, but Rowkey for email on Kings. låll.
+
         const attackingKingQuery: TableQuery = new TableQuery().where(`RowKey == '${attacking}'`);
         const defendingKingQuery: TableQuery = new TableQuery().where(`RowKey == '${defending}'`);
         tableService.queryEntities(tableName, attackingKingQuery, null, (error, attackerResult, attackerResponse) => {
@@ -30,22 +31,22 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
                         let title = "WAR IS COMING"
                         let text = `${attacker.FirstName} ${attacker.LastName} and ${defender.FirstName} ${defender.LastName} are going to war shortly, at ${defender.lat}, ${defender.lon}`
                         notifyWarRoom(title, text)
-                        // function timeout(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
                         setTimeout(() => {
                             notifyWarRoom("WAR COMMENCING", "hope you buffed your thralls");
                             wageWar(attacking, defending);
                         }
                             , 5000)
                         context.res.status(200);
+                        context.done();
                     } else {
                         context.log(`something went wrong while getting kings from storage`)
                         context.res.status(500).json({ error: error });
+                        context.done();
                     }
                 })
-            } else { context.res.status(500).json({ error: error }); }
+            } else { context.res.status(500).json({ error: error }); context.done(); }
         });
     }
 };
 
 export default httpTrigger;
- 
