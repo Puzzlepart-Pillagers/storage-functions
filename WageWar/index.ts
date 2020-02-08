@@ -21,15 +21,20 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
         }
         context.done();
     } else {
-        wageWar(attacking, defending).then(() => {
+        wageWar(attacking, defending).then((result) => {
+            notifyWarRoom(result[0], result[1])
             console.log("WAR OVER, details in chat")
+            context.res = {
+                status: 200,
+                body: "successfully launched an attack"
+            }
             context.done();
         })
     }
 };
 
 // THESE ARE MAIL ADDRESSES
-async function wageWar(attacking, defending) {
+async function wageWar(attacking, defending): Promise<Array<any>> {
     try {
         let attackerRes = await got(`${functionURL}/GetKing?email=${attacking}`).json();
         let defenderRes = await got(`${functionURL}/GetKing?email=${defending}`).json();
@@ -88,7 +93,7 @@ async function wageWar(attacking, defending) {
                 \n${atWon
                 ? `**${attacker.FirstName}** steals **₰${atPenningLossGain.toString()}** from **${defender.FirstName}**`
                 : `**${defender.FirstName}** steals **₰${defPenningLossGain.toString()}** from **${attacker.FirstName}**`}`;
-        notifyWarRoom(title, txt)
+        return [title, txt];
     } catch (err) {
         console.error(err)
     }
