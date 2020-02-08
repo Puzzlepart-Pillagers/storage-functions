@@ -6,7 +6,7 @@ const tableService = createTableService();
 const tableName = 'Kings';
 
 function notifyWarRoom(title, text) { return got(`${process.env.NOTIFY_WAR_ROOM_FUNCTION_URL}?title=${title}&text=${text}`) };
-function timeout(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+function wageWar(king1, king2) { return got(`${process.env.WAGE_WAR_FUNCTION_URL}?attacking=${king1}&defending=${king2}`) };
 
 const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest): void {
     context.log('PrepareForBattle function processed by a request.');
@@ -30,14 +30,13 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
                         let title = "WAR IS COMING"
                         let text = `${attacker.FirstName} ${attacker.LastName} and ${defender.FirstName} ${defender.LastName} are going to war shortly, at ${defender.lat}, ${defender.lon}`
                         notifyWarRoom(title, text)
-                        console.log("starting grace period before war begins");
-                        timeout(2000).then(() => {
-                            notifyWarRoom("War starting in ten seconds!", "Better buff your thralls!");
-                            timeout(2000).then(() => {
-                                notifyWarRoom("War is starting!", "Blood will be shed!");
-                                context.res.status(200);
-                            })
-                        })
+                        // function timeout(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+                        setTimeout(() => {
+                            notifyWarRoom("WAR COMMENCING", "hope you buffed your thralls");
+                            wageWar(req.query.attacking, req.query.defending);
+                        }
+                            , 5000)
+                        context.res.status(200);
                     } else {
                         context.log(`something went wrong while getting kings from storage`)
                         context.res.status(500).json({ error: error });
@@ -49,3 +48,4 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
 };
 
 export default httpTrigger;
+ 
