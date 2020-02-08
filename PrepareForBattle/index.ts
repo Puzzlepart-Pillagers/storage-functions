@@ -6,7 +6,7 @@ const tableService = createTableService();
 const tableName = 'Kings';
 
 function notifyWarRoom(title, text) { return got(`${process.env.NOTIFY_WAR_ROOM_FUNCTION_URL}?title=${title}&text=${text}`) };
-function wageWar(king1, king2) { return got(`${process.env.WAGE_WAR_FUNCTION_URL}?attacking=${king1}&defending=${king2}`) };
+function wageWar(king1, king2) { got(`${process.env.WAGE_WAR_FUNCTION_URL}?attacking=${king1}&defending=${king2}`) };
 
 const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest): void {
     context.log('PrepareForBattle function processed by a request.');
@@ -33,7 +33,7 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
                         // function timeout(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
                         setTimeout(() => {
                             notifyWarRoom("WAR COMMENCING", "hope you buffed your thralls");
-                            wageWar(req.query.attacking, req.query.defending);
+                            wageWar(attacking, defending);
                         }
                             , 5000)
                         context.res.status(200);

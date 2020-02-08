@@ -29,10 +29,10 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
 
 // THESE ARE MAIL ADDRESSES
 async function wageWar(attacking, defending): Promise<void> {
-    let attackerRes = await got(`${functionURL}/GetKing?email=${attacking}`);
-    let defenderRes = await got(`${functionURL}/GetKing?email=${defending}`);
-    let atUnits = await got(`${functionURL}/GetUnits?email=${attacking}`);
-    let defUnits = await got(`${functionURL}/GetUnits?email=${defending}`);
+    let attackerRes = await got(`${functionURL}/GetKing?email=${attacking}`).json();
+    let defenderRes = await got(`${functionURL}/GetKing?email=${defending}`).json();
+    let atUnits = await got(`${functionURL}/GetUnits?email=${attacking}`).json();
+    let defUnits = await got(`${functionURL}/GetUnits?email=${defending}`).json();
     let attacker = attackerRes.value[0]
     let defender = defenderRes.value[0]
     let atFullName = `${attacker.FirstName} ${attacker.LastName}`
