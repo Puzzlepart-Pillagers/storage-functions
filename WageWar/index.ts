@@ -29,7 +29,7 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
 };
 
 // THESE ARE MAIL ADDRESSES
-async function wageWar(attacking, defending): Promise<void> {
+async function wageWar(attacking, defending) {
     try {
         let attackerRes = await got(`${functionURL}/GetKing?email=${attacking}`).json();
         let defenderRes = await got(`${functionURL}/GetKing?email=${defending}`).json();
@@ -87,7 +87,7 @@ async function wageWar(attacking, defending): Promise<void> {
                \nPenning forfeited:
                 \n${atWon
                 ? `**${attacker.FirstName}** steals **₰${atPenningLossGain.toString()}** from **${defender.FirstName}**`
-                : `**${defender.FirstName}** steals **₰${defPenningLossGain.toString()}** from **${defender.FirstName}**`}`;
+                : `**${defender.FirstName}** steals **₰${defPenningLossGain.toString()}** from **${attacker.FirstName}**`}`;
         notifyWarRoom(title, txt)
     } catch (err) {
         console.error(err)
