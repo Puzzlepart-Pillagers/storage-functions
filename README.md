@@ -125,6 +125,12 @@ https://pillagers-storage-functions.azurewebsites.net/api/GetKing?email={user em
 
 Returns the king associated with `user email` and his data
 
+### GetKings
+GET
+https://pillagers-storage-functions.azurewebsites.net/api/GetKings
+
+Returns all kings
+
 ### SetPenning
 POST
 https://pillagers-storage-functions.azurewebsites.net/api/SetPenning
